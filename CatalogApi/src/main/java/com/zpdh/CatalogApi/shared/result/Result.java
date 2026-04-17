@@ -1,5 +1,9 @@
 package com.zpdh.CatalogApi.shared.result;
 
+import com.zpdh.CatalogApi.shared.error.ApiException;
+import com.zpdh.CatalogApi.shared.error.DomainError;
+import com.zpdh.CatalogApi.shared.error.ErrorCode;
+
 /**
  * Representa o resultado de uma operação, pode ser successo ou falha.
  * Inspirado no tipo Result do Rust, para fluxo de controle como uma alternativa à exceptions.
@@ -17,6 +21,10 @@ public sealed interface Result<T> permits Result.Success, Result.Failure {
 
     static <T> Result<T> failure(String errorMessage, ErrorCode errorCode) {
         return new Failure<>(errorMessage, errorCode);
+    }
+
+    static <T> Result<T> failure(DomainError error) {
+        return new Failure<>(error.getMessage(), error.getErrorCode());
     }
 
     default T getOrThrow() {

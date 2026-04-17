@@ -1,4 +1,4 @@
-package com.zpdh.CatalogApi.shared.result;
+package com.zpdh.CatalogApi.shared.error;
 
 import org.springframework.http.HttpStatus;
 
