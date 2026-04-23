@@ -1,5 +1,6 @@
 package com.zpdh.CatalogApi.domain.category;
 
+import com.zpdh.CatalogApi.domain.category.dtos.CategoryResponse;
 import jakarta.persistence.*;
 
 @Entity
@@ -37,5 +38,9 @@ public class Category {
 
     public String getDescription() {
         return description;
+    }
+
+    public CategoryResponse toDto() {
+        return new CategoryResponse(id, name, description);
     }
 }
