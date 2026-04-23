@@ -28,6 +28,11 @@ public class Category {
         return new Category(name, description);
     }
 
+    public void update(String name, String description) {
+        this.name = name;
+        this.description = name;
+    }
+
     public Long getId() {
         return id;
     }
