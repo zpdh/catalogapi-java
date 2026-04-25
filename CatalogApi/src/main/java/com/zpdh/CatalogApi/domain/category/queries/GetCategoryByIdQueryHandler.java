@@ -5,7 +5,9 @@ import com.zpdh.CatalogApi.domain.category.CategoryRepository;
 import com.zpdh.CatalogApi.domain.category.dtos.CategoryResponse;
 import com.zpdh.CatalogApi.shared.mediator.query.QueryHandler;
 import com.zpdh.CatalogApi.shared.result.Result;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GetCategoryByIdQueryHandler implements QueryHandler<GetCategoryByIdQuery, Result<CategoryResponse>> {
 
     private final CategoryRepository categoryRepository;

@@ -5,7 +5,9 @@ import com.zpdh.CatalogApi.domain.category.CategoryRepository;
 import com.zpdh.CatalogApi.shared.mediator.command.CommandHandler;
 import com.zpdh.CatalogApi.shared.result.Result;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DeleteCategoryCommandHandler implements CommandHandler<DeleteCategoryCommand, Result<Void>> {
 
     private final CategoryRepository categoryRepository;

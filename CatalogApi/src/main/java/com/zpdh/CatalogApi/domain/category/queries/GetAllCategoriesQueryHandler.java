@@ -4,9 +4,11 @@ import com.zpdh.CatalogApi.domain.category.Category;
 import com.zpdh.CatalogApi.domain.category.CategoryRepository;
 import com.zpdh.CatalogApi.domain.category.dtos.CategoryResponse;
 import com.zpdh.CatalogApi.shared.mediator.query.QueryHandler;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class GetAllCategoriesQueryHandler implements QueryHandler<GetAllCategoriesQuery, List<CategoryResponse>> {
     private final CategoryRepository categoryRepository;
 

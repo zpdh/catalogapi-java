@@ -8,7 +8,9 @@ import com.zpdh.CatalogApi.domain.category.dtos.UpdateCategoryRequest;
 import com.zpdh.CatalogApi.shared.mediator.command.CommandHandler;
 import com.zpdh.CatalogApi.shared.result.Result;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UpdateCategoryCommandHandler implements CommandHandler<UpdateCategoryCommand, Result<CategoryResponse>> {
 
     private final CategoryRepository categoryRepository;
