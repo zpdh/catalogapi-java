@@ -20,3 +20,7 @@ spring:
 
 server:
   port: 8080
+
+security:
+  secret: 3f8a2b1c9d4e7f6a0b5c2d1e8f3a7b4c9d2e5f0a1b6c3d8e7f2a5b0c4d9e6f1a
+  expiration: 86400000

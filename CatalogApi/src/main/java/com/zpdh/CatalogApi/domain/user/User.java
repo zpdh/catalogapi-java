@@ -30,7 +30,7 @@ public class User {
         this.role = role;
     }
 
-    private static User create(String email, String password, Role role) {
+    public static User create(String email, String password, Role role) {
         return new User(email, password, role);
     }
 
