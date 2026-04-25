@@ -1,6 +1,7 @@
 package com.zpdh.CatalogApi.domain.product;
 
 import com.zpdh.CatalogApi.domain.category.Category;
+import com.zpdh.CatalogApi.domain.product.dto.ProductResponse;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -75,5 +76,17 @@ public class Product {
 
     public Category getCategory() {
         return category;
+    }
+
+    public ProductResponse toDto() {
+        return new ProductResponse(
+            id,
+            name,
+            description,
+            price,
+            stock,
+            category.getId(),
+            category.getName()
+        );
     }
 }
