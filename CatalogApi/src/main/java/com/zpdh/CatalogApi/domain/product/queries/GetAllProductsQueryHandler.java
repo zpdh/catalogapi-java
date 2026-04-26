@@ -5,6 +5,7 @@ import com.zpdh.CatalogApi.domain.product.ProductRepository;
 import com.zpdh.CatalogApi.domain.product.dto.ProductResponse;
 import com.zpdh.CatalogApi.shared.mediator.query.QueryHandler;
 import com.zpdh.CatalogApi.shared.result.Result;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class GetAllProductsQueryHandler implements QueryHandler<GetAllProductsQu
     }
 
     @Override
+    @Transactional
     public Result<List<ProductResponse>> handle(GetAllProductsQuery query) {
         List<ProductResponse> products = productRepository.findAll()
             .stream()

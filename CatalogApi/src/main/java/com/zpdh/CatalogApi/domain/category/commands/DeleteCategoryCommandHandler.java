@@ -23,6 +23,8 @@ public class DeleteCategoryCommandHandler implements CommandHandler<DeleteCatego
             return Result.failure(CategoryErrors.NOT_FOUND);
         }
 
+        categoryRepository.deleteById(command.id());
+
         return Result.success(null);
 
     }

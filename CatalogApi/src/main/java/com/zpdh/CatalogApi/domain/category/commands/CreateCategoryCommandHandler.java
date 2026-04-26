@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CreateCategoryCommandHandler implements CommandHandler<CreateCategoryCommand, Result<CategoryResponse>> {
-
     private final CategoryRepository categoryRepository;
 
     public CreateCategoryCommandHandler(CategoryRepository categoryRepository) {
@@ -29,6 +28,8 @@ public class CreateCategoryCommandHandler implements CommandHandler<CreateCatego
             command.request().name(),
             command.request().description()
         );
+
+        categoryRepository.save(cat);
 
         return Result.success(cat.toDto());
     }

@@ -22,8 +22,7 @@ public class UpdateCategoryCommandHandler implements CommandHandler<UpdateCatego
     @Override
     @Transactional
     public Result<CategoryResponse> handle(UpdateCategoryCommand command) {
-        return categoryRepository
-            .findById(command.id())
+        return categoryRepository.findById(command.id())
             .map(cat -> {
                 cat.update(
                     command.request().name(),

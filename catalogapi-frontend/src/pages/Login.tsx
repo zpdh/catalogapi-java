@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,12 +16,12 @@ type FormData = z.infer<typeof schema>;
 export default function Login() {
     const navigate = useNavigate();
     const setAuth = useAuthStore((state) => state.setAuth);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
-        setError,
     } = useForm<FormData>({
         resolver: zodResolver(schema),
     });
@@ -30,8 +31,8 @@ export default function Login() {
             const response = await login(data);
             setAuth(response);
             navigate("/dashboard");
-        } catch {
-            setError("root", { message: "Invalid email or password" });
+        } catch(error) {
+            setErrorMessage("Invalid email or password");
         }
     };
 
@@ -73,9 +74,9 @@ export default function Login() {
                             </p>
                         )}
                     </div>
-                    {errors.root && (
+                    {errorMessage && (
                         <p className="text-red-500 text-sm text-center">
-                            {errors.root.message}
+                            {errorMessage}
                         </p>
                     )}
                     <button

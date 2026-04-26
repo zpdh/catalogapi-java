@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,23 +16,24 @@ type FormData = z.infer<typeof schema>;
 export default function Register() {
     const navigate = useNavigate();
     const setAuth = useAuthStore((state) => state.setAuth);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
-        setError,
     } = useForm<FormData>({
         resolver: zodResolver(schema),
     });
 
     const onSubmit = async (data: FormData) => {
+        setErrorMessage(null);
         try {
             const response = await registerUser(data);
             setAuth(response);
             navigate("/dashboard");
         } catch {
-            setError("root", { message: "Email already in use" });
+            setErrorMessage("Email already in use");
         }
     };
 
@@ -75,9 +77,9 @@ export default function Register() {
                             </p>
                         )}
                     </div>
-                    {errors.root && (
+                    {errorMessage && (
                         <p className="text-red-500 text-sm text-center">
-                            {errors.root.message}
+                            {errorMessage}
                         </p>
                     )}
                     <button

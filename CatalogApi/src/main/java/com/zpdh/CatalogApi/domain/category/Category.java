@@ -30,7 +30,7 @@ public class Category {
 
     public void update(String name, String description) {
         this.name = name;
-        this.description = name;
+        this.description = description;
     }
 
     public Long getId() {
