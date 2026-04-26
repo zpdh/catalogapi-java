@@ -1,4 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "../components/shared/ProtectedRoute";
+import Login from "../pages/Login";
+import Categories from "../pages/Categories";
+import Products from "../pages/Products";
+import Dashboard from "../pages/Dashboard";
+import Register from "../pages/Register";
 
 export default function AppRoutes() {
     return (
