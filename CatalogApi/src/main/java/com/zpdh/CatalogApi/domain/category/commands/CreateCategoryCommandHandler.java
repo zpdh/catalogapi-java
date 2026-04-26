@@ -24,13 +24,13 @@ public class CreateCategoryCommandHandler implements CommandHandler<CreateCatego
             return Result.failure(CategoryErrors.ALREADY_EXISTS);
         }
 
-        Category cat = Category.create(
+        Category category = Category.create(
             command.request().name(),
             command.request().description()
         );
 
-        categoryRepository.save(cat);
+        categoryRepository.save(category);
 
-        return Result.success(cat.toDto());
+        return Result.success(category.toDto());
     }
 }

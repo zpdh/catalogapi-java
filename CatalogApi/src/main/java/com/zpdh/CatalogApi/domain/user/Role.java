@@ -1,9 +1,6 @@
 package com.zpdh.CatalogApi.domain.user;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public enum Role {
     ADMIN,

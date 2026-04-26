@@ -3,8 +3,6 @@ package com.zpdh.CatalogApi.domain.category.commands;
 import com.zpdh.CatalogApi.domain.category.CategoryErrors;
 import com.zpdh.CatalogApi.domain.category.CategoryRepository;
 import com.zpdh.CatalogApi.domain.category.dtos.CategoryResponse;
-import com.zpdh.CatalogApi.domain.category.dtos.CreateCategoryRequest;
-import com.zpdh.CatalogApi.domain.category.dtos.UpdateCategoryRequest;
 import com.zpdh.CatalogApi.shared.mediator.command.CommandHandler;
 import com.zpdh.CatalogApi.shared.result.Result;
 import jakarta.transaction.Transactional;
