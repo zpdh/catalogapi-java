@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: catalogapi-postgres
+    environment:
+      POSTGRES_DB: catalogdb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - catalogapi-network
+    healthcheck:
+      test: ["CMD_SHELL", "pg_isready -U admin -d catalogdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+  backend:
+    build:
+      context: ./CatalogApi
+      dockerfile: Dockerfile
+      container_name: catalogapi-backend
+    container_name: catalogapi-backend
+    ports:
+      - "8080:8080"
+    environmeent:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/catalogdb
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+      SECURITY_JWT_SECRET: 3f8a2b1c9d4e7f6a0b5c2d1e8f3a7b4c9d2e5f0a1b6c3d8e7f2a5b0c4d9e6f1a
+      SECURITY_JWT_EXPIRATION: 86400000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - catalogapi-network
+  
+  frontend:
+    build:
+      context: ./catalogapi-frontend
+      dockerfile: Dockerfile
+    container_name: catalogapi-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - catalogapi-network
+
+networks:
+  catalogapi-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
