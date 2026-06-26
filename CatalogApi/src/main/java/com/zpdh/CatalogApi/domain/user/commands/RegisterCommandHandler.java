@@ -5,7 +5,9 @@ import com.zpdh.CatalogApi.domain.user.User;
 import com.zpdh.CatalogApi.domain.user.UserErrors;
 import com.zpdh.CatalogApi.domain.user.UserRepository;
 import com.zpdh.CatalogApi.domain.user.dto.AuthResponse;
+import com.zpdh.CatalogApi.domain.user.dto.UserAuthPayload;
 import com.zpdh.CatalogApi.shared.mediator.command.CommandHandler;
+import com.zpdh.CatalogApi.shared.messaging.EventPublisher;
 import com.zpdh.CatalogApi.shared.result.Result;
 import com.zpdh.CatalogApi.shared.security.JwtService;
 import jakarta.transaction.Transactional;
@@ -17,11 +19,17 @@ public class RegisterCommandHandler implements CommandHandler<RegisterCommand, R
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final EventPublisher eventPublisher;
 
-    public RegisterCommandHandler(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public RegisterCommandHandler(
+        UserRepository userRepository,
+        PasswordEncoder passwordEncoder,
+        JwtService jwtService,
+        EventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -35,6 +43,7 @@ public class RegisterCommandHandler implements CommandHandler<RegisterCommand, R
         User user = User.create(command.request().email(), hashedPassword, Role.CLIENT);
 
         userRepository.save(user);
+        eventPublisher.publish("user.registered", new UserAuthPayload(user.getEmail(), user.getRole()));
 
         String token = jwtService.generateToken(user.getEmail(), user.getRole());
 

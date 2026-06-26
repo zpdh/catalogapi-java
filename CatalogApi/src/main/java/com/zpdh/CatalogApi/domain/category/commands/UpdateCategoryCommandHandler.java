@@ -4,6 +4,7 @@ import com.zpdh.CatalogApi.domain.category.CategoryErrors;
 import com.zpdh.CatalogApi.domain.category.CategoryRepository;
 import com.zpdh.CatalogApi.domain.category.dtos.CategoryResponse;
 import com.zpdh.CatalogApi.shared.mediator.command.CommandHandler;
+import com.zpdh.CatalogApi.shared.messaging.EventPublisher;
 import com.zpdh.CatalogApi.shared.result.Result;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Component;
 public class UpdateCategoryCommandHandler implements CommandHandler<UpdateCategoryCommand, Result<CategoryResponse>> {
 
     private final CategoryRepository categoryRepository;
+    private final EventPublisher eventPublisher;
 
-    public UpdateCategoryCommandHandler(CategoryRepository categoryRepository) {
+    public UpdateCategoryCommandHandler(CategoryRepository categoryRepository, EventPublisher eventPublisher) {
         this.categoryRepository = categoryRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -26,6 +29,7 @@ public class UpdateCategoryCommandHandler implements CommandHandler<UpdateCatego
                     command.request().name(),
                     command.request().description()
                 );
+                eventPublisher.publish("category.updated", cat.toDto());
 
                 return Result.success(cat.toDto());
             }).orElse(Result.failure(CategoryErrors.NOT_FOUND));

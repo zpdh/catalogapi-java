@@ -6,6 +6,7 @@ import com.zpdh.CatalogApi.domain.product.Product;
 import com.zpdh.CatalogApi.domain.product.ProductRepository;
 import com.zpdh.CatalogApi.domain.product.dto.ProductResponse;
 import com.zpdh.CatalogApi.shared.mediator.command.CommandHandler;
+import com.zpdh.CatalogApi.shared.messaging.EventPublisher;
 import com.zpdh.CatalogApi.shared.result.Result;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,15 @@ import org.springframework.stereotype.Component;
 public class CreateProductCommandHandler implements CommandHandler<CreateProductCommand, Result<ProductResponse>> {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final EventPublisher eventPublisher;
 
-    public CreateProductCommandHandler(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public CreateProductCommandHandler(
+        ProductRepository productRepository,
+        CategoryRepository categoryRepository,
+        EventPublisher eventPublisher) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -32,6 +38,7 @@ public class CreateProductCommandHandler implements CommandHandler<CreateProduct
                     command.request().stock(),
                     cat);
                 productRepository.save(product);
+                eventPublisher.publish("product.created", product.toDto());
 
                 return Result.success(product.toDto());
             }).orElse(Result.failure(CategoryErrors.NOT_FOUND));

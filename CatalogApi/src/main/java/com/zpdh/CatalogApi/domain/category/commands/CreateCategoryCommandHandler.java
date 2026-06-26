@@ -5,6 +5,7 @@ import com.zpdh.CatalogApi.domain.category.CategoryErrors;
 import com.zpdh.CatalogApi.domain.category.CategoryRepository;
 import com.zpdh.CatalogApi.domain.category.dtos.CategoryResponse;
 import com.zpdh.CatalogApi.shared.mediator.command.CommandHandler;
+import com.zpdh.CatalogApi.shared.messaging.EventPublisher;
 import com.zpdh.CatalogApi.shared.result.Result;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreateCategoryCommandHandler implements CommandHandler<CreateCategoryCommand, Result<CategoryResponse>> {
     private final CategoryRepository categoryRepository;
+    private final EventPublisher eventPublisher;
 
-    public CreateCategoryCommandHandler(CategoryRepository categoryRepository) {
+    public CreateCategoryCommandHandler(CategoryRepository categoryRepository, EventPublisher eventPublisher) {
         this.categoryRepository = categoryRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -30,6 +33,7 @@ public class CreateCategoryCommandHandler implements CommandHandler<CreateCatego
         );
 
         categoryRepository.save(category);
+        eventPublisher.publish("category.created", category.toDto());
 
         return Result.success(category.toDto());
     }

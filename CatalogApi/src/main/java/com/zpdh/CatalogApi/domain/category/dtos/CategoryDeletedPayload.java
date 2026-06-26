@@ -2,5 +2,5 @@ package com.zpdh.CatalogApi.domain.category.dtos;
 
 import com.zpdh.CatalogApi.shared.messaging.payload.CategoryEventPayload;
 
-public record CategoryResponse(Long id, String name, String description) implements CategoryEventPayload {
+public record CategoryDeletedPayload(Long id) implements CategoryEventPayload {
 }

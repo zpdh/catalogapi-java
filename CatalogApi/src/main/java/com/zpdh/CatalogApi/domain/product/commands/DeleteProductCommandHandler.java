@@ -2,7 +2,9 @@ package com.zpdh.CatalogApi.domain.product.commands;
 
 import com.zpdh.CatalogApi.domain.product.ProductErrors;
 import com.zpdh.CatalogApi.domain.product.ProductRepository;
+import com.zpdh.CatalogApi.domain.product.dto.ProductDeletedPayload;
 import com.zpdh.CatalogApi.shared.mediator.command.CommandHandler;
+import com.zpdh.CatalogApi.shared.messaging.EventPublisher;
 import com.zpdh.CatalogApi.shared.result.Result;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
@@ -10,9 +12,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class DeleteProductCommandHandler implements CommandHandler<DeleteProductCommand, Result<Void>> {
     private final ProductRepository productRepository;
+    private final EventPublisher eventPublisher;
 
-    public DeleteProductCommandHandler(ProductRepository productRepository) {
+    public DeleteProductCommandHandler(ProductRepository productRepository, EventPublisher eventPublisher) {
         this.productRepository = productRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -23,6 +27,8 @@ public class DeleteProductCommandHandler implements CommandHandler<DeleteProduct
         }
 
         productRepository.deleteById(command.id());
+        eventPublisher.publish("product.deleted", new ProductDeletedPayload(command.id()));
+
         return Result.success(null);
     }
 }

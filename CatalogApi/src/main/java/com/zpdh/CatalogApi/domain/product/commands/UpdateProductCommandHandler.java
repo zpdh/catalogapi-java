@@ -6,6 +6,7 @@ import com.zpdh.CatalogApi.domain.product.ProductErrors;
 import com.zpdh.CatalogApi.domain.product.ProductRepository;
 import com.zpdh.CatalogApi.domain.product.dto.ProductResponse;
 import com.zpdh.CatalogApi.shared.mediator.command.CommandHandler;
+import com.zpdh.CatalogApi.shared.messaging.EventPublisher;
 import com.zpdh.CatalogApi.shared.result.Result;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,12 @@ import org.springframework.stereotype.Component;
 public class UpdateProductCommandHandler implements CommandHandler<UpdateProductCommand, Result<ProductResponse>> {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final EventPublisher eventPublisher;
 
-    public UpdateProductCommandHandler(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public UpdateProductCommandHandler(ProductRepository productRepository, CategoryRepository categoryRepository, EventPublisher eventPublisher) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -33,6 +36,8 @@ public class UpdateProductCommandHandler implements CommandHandler<UpdateProduct
                         command.request().stock(),
                         cat
                     );
+                    eventPublisher.publish("product.updated", cat.toDto());
+
 
                     return Result.success(product.toDto());
                 }).orElse(Result.failure(CategoryErrors.NOT_FOUND))

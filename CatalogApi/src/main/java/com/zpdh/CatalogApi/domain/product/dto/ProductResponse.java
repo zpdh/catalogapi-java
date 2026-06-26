@@ -1,5 +1,7 @@
 package com.zpdh.CatalogApi.domain.product.dto;
 
+import com.zpdh.CatalogApi.shared.messaging.payload.ProductEventPayload;
+
 import java.math.BigDecimal;
 
 public record ProductResponse(
@@ -9,5 +11,5 @@ public record ProductResponse(
     BigDecimal price,
     Integer stock,
     Long categoryId,
-    String categoryName) {
+    String categoryName) implements ProductEventPayload {
 }
