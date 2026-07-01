@@ -5,6 +5,7 @@ import Categories from "../pages/Categories";
 import Products from "../pages/Products";
 import Dashboard from "../pages/Dashboard";
 import Register from "../pages/Register";
+import Monitor from "../pages/Monitor";
 
 export default function AppRoutes() {
     return (
@@ -15,6 +16,7 @@ export default function AppRoutes() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/products" element={<Products />} />
+                <Route path="/monitor" element={<Monitor />} />
             </Route>
             <Route path="*" element={<Navigate to="/login" />} />
         </Routes>

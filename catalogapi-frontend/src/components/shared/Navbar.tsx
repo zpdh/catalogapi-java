@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
-import { LogOut, Package, Tag, LayoutDashboard } from "lucide-react";
+import { LogOut, Package, Tag, LayoutDashboard, Activity } from "lucide-react";
 
 export default function Navbar() {
     const { email, role, clearAuth } = useAuthStore();
@@ -10,6 +10,8 @@ export default function Navbar() {
         clearAuth();
         navigate("/login");
     };
+
+    const isAdmin = useAuthStore((state) => state.isAdmin());
 
     return (
         <nav className="bg-gray-900 text-white px-6 py-4 flex items-center justify-between">
@@ -36,6 +38,15 @@ export default function Navbar() {
                     <Package size={16} />
                     Products
                 </Link>
+                {isAdmin && (
+                    <Link
+                        to="/monitor"
+                        className="flex items-center gap-1 hover:text-gray-300"
+                    >
+                        <Activity size={16} />
+                        Monitor
+                    </Link>
+                )}
             </div>
             <div className="flex items-center gap-4">
                 <span className="text-sm text-gray-400">
